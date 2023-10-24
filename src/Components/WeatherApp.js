@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 
 const WeatherApp = () => {
+  const API_KEY = process.env.REACT_APP_API_KEY;
   const [weather, setWeather] = useState(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        const lattitude = position.coords.latitude;
+        const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
         fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${lattitude}&lon=${longitude}&appid=5b9b093b61d5c39896fdd6d9b9234bc7&units=metric`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
         )
           .then((response) => response.json())
           .then((data) => {
@@ -27,7 +28,7 @@ const WeatherApp = () => {
         <div>
           <h2 className="text-lg">Current Weather</h2>
           <p className="text-4xl font-bold">{weather?.main?.temp}&deg;C</p>
-          <p>Conditions: {weather.weather[0].description}</p>
+          <p>Conditions: {weather?.weather[0].description}</p>
         </div>
       ) : (
         <div className="text-red-500 font-semibold">
